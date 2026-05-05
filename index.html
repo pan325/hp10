@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春漫游记 - 换一种方式打开小林漫画</title>
+    <meta property="og:image" content="https://pan325.github.io/hp10/25.jpg">
+    <meta name="twitter:image" content="https://pan325.github.io/hp10/25.jpg">
+    <link rel="image_src" href="https://pan325.github.io/hp10/25.jpg">
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2C3E50;
+            --light: #F7F9FC;
+            --warm: #FF8C42;
+            --cool: #6C5CE7;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--dark);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-100px) rotate(180deg);
+                opacity: 0.3;
+            }
+        }
+
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .title-screen {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 3.5em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            letter-spacing: 8px;
+        }
+
+        .game-subtitle {
+            font-size: 1.3em;
+            color: var(--accent);
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .youth-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--warm));
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, var(--secondary), var(--cool));
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Noto Serif SC', serif;
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
+        }
+
+        .story-intro {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .story-text {
+            font-size: 1.15em;
+            line-height: 2;
+            color: var(--dark);
+            text-align: justify;
+        }
+
+        .story-text p {
+            margin-bottom: 15px;
+            text-indent: 2em;
+        }
+
+        .character-select {
+            display: none;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .section-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 2.2em;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .character-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .character-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .character-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--secondary);
+        }
+
+        .character-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .char-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .char-name {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1.6em;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .char-title {
+            text-align: center;
+            color: var(--cool);
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .char-desc {
+            font-size: 0.95em;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .char-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .trait-tag {
+            background: linear-gradient(45deg, var(--accent), #FFD93D);
+            color: var(--dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+
+        .char-ability {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            color: var(--dark);
+        }
+
+        .char-ability strong {
+            color: var(--primary);
+        }
+
+        .game-main {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .game-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--warm));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .player-details h3 {
+            font-size: 1.2em;
+            color: var(--dark);
+        }
+
+        .player-details p {
+            font-size: 0.85em;
+            color: #777;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #777;
+        }
+
+        .scene-display {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1.8em;
+            color: var(--dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chapter-badge {
+            background: linear-gradient(45deg, var(--primary), var(--warm));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.6em;
+        }
+
+        .scene-description {
+            font-size: 1.1em;
+            line-height: 1.9;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .comic-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comic-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .comic-text {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1.3em;
+            color: var(--dark);
+            line-height: 1.8;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .comic-theme {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+
+        .comic-wisdom {
+            background: linear-gradient(135deg, #e8f4f8, #d1e8f0);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.95em;
+            color: #2c5f6f;
+            line-height: 1.7;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .comic-wisdom::before {
+            content: '💡 ';
+        }
+
+        .comic-image-container {
+            text-align: center;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .comic-image {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .comic-image:hover {
+            transform: scale(1.02);
+        }
+
+        .treasure-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #FFD93D, #FF8C42);
+            border-radius: 20px;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .treasure-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.05) 10px,
+                    rgba(255, 255, 255, 0.05) 20px);
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .treasure-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1.8em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chest-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chest {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #8B4513, #D2691E);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 3px solid #FFD700;
+        }
+
+        .chest:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .chest.shaking {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-10deg);
+            }
+            75% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .chest.opened {
+            background: linear-gradient(145deg, #FFD700, #FFA500);
+            animation: chestOpen 0.8s ease-out forwards;
+        }
+
+        @keyframes chestOpen {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                background: linear-gradient(145deg, #90EE90, #7CFC00);
+            }
+        }
+
+        .flip-card {
+            background: transparent;
+            width: 300px;
+            height: 400px;
+            perspective: 1000px;
+            margin: 20px auto;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-card-front {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 4em;
+        }
+
+        .flip-card-back {
+            background: white;
+            color: var(--dark);
+            transform: rotateY(180deg);
+            font-size: 1em;
+            overflow-y: hidden;
+        }
+
+        .choice-section {
+            margin: 25px 0;
+        }
+
+        .choice-title {
+            font-size: 1.2em;
+            color: var(--dark);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #fff, #f0f4f8);
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 18px 25px;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Serif SC', serif;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .choice-btn:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .choice-btn:hover {
+            transform: translateX(8px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+        }
+
+        .choice-btn .choice-label {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .ending-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin: 30px 0;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .ending-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .ending-content {
+            font-size: 1.1em;
+            line-height: 2;
+            color: #444;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .ending-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .ending-stat {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .ending-stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .ending-stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .evaluation {
+            background: linear-gradient(135deg, #e8f4f8, #d1e8f0);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 5px solid var(--secondary);
+            text-align: left;
+        }
+
+        .evaluation h4 {
+            color: var(--cool);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, var(--primary), var(--warm));
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Noto Serif SC', serif;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .collection-book {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .collection-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            overflow: hidden;
+        }
+
+        .collection-item.collected {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #e8f4f8, #d1e8f0);
+            cursor: pointer;
+        }
+
+        .collection-item.not-collected {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .collection-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: #f5f5f5;
+        }
+
+        .collection-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .collection-theme {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, var(--primary), var(--warm));
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: none;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: starFloat 2s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes starFloat {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .comic-display-area {
+            background: linear-gradient(135deg, #fff9e6, #fff0cc);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px dashed var(--accent);
+            position: relative;
+        }
+
+        .comic-placeholder {
+            font-size: 5em;
+            margin-bottom: 15px;
+        }
+
+        .comic-caption {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1.4em;
+            color: var(--dark);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .comic-reflection {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: left;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .comic-reflection h4 {
+            color: var(--cool);
+            margin-bottom: 10px;
+        }
+
+        .comic-reflection p {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 600px) {
+            .game-title {
+                font-size: 2.2em;
+                letter-spacing: 4px;
+            }
+
+            .characters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chest {
+                width: 90px;
+                height: 90px;
+                font-size: 2.2em;
+            }
+
+            .game-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .game-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">🔊</button>
+
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://pan325.github.io/hp10/bgm.MP3" type="audio/mpeg">
+    </audio>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="game-container">
+
+        <div class="title-screen" id="titleScreen">
+            <div class="youth-badge">🎉 五四青年节特别版 🎉</div>
+            <h1 class="game-title">青春漫游记</h1>
+            <p class="game-subtitle">小林漫画互动游戏 - 在笑声中思考人生</p>
+
+            <div style="margin: 40px 0;">
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.1em; line-height: 2;">
+                    在这个快节奏的时代，让我们放慢脚步<br>
+                    通过小林漫画的智慧，重新审视青春、梦想与人生
+                </p>
+            </div>
+
+            <button class="start-btn" onclick="startGame()">✨ 开始旅程 ✨</button>
+
+            <div style="margin-top: 40px; color: rgba(255,255,255,0.7); font-size: 0.9em;">
+                <p>🎮 收集35张漫画金句 | 🎁 开启神秘宝箱 | 🌟 体验不同人生</p>
+            </div>
+        </div>
+
+        <div class="story-intro" id="storyIntro">
+            <div class="story-text">
+                <p>在繁华都市的某个角落，有一位有趣的漫画家，叫做"小林"。</p>
+                <p>小林的漫画里藏着人生的智慧，收集齐35张漫画，找到属于你自己的人生答案。</p>
+                <p>五四青年节，你收到了一封神秘的邀请函：</p>
+                <p style="text-align: center; font-style: italic; color: var(--cool); background: linear-gradient(135deg, #f0f4f8, #e8ecf1); padding: 20px; border-radius: 12px; margin: 20px 0;">
+                    "年轻人，无论你正经历什么，都请相信：<br>
+                    青春不是年华，而是心境。"
+                </p>
+                <p>你站在时光驿站的门前，推开门的那一刻，时光开始流转...</p>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="start-btn" onclick="showCharacterSelect()">选择你的角色</button>
+            </div>
+        </div>
+
+        <div class="character-select" id="characterSelect">
+            <h2 class="section-title">选择你的人生角色</h2>
+            <p style="text-align: center; color: rgba(255,255,255,0.9); margin-bottom: 10px;">
+                每个角色都有独特的故事线和人生体验，选择最贴近你内心的那个
+            </p>
+
+            <div class="characters-grid">
+                <div class="character-card" onclick="selectCharacter('dreamer')" id="char-dreamer">
+                    <div class="char-icon">🌟</div>
+                    <div class="char-name">追梦少年</div>
+                    <div class="char-title">心怀星辰的冒险家</div>
+                    <div class="char-desc">
+                        你刚大学毕业，怀揣着改变世界的梦想来到大城市。你相信努力就有回报，对未来充满期待。虽然现实会给你一些打击，但你从不轻言放弃。
+                    </div>
+                    <div class="char-traits">
+                        <span class="trait-tag">乐观</span>
+                        <span class="trait-tag">理想主义</span>
+                        <span class="trait-tag">冲动</span>
+                        <span class="trait-tag">富有创造力</span>
+                    </div>
+                    <div class="char-ability">
+                        <strong>特殊能力：</strong>梦想护盾 - 在困境中保持希望，获得额外20%的感悟加成
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="selectCharacter('struggler')" id="char-struggler">
+                    <div class="char-icon">⚔️</div>
+                    <div class="char-name">奋斗青年</div>
+                    <div class="char-title">在夹缝中求生存的战士</div>
+                    <div class="char-desc">
+                        你已经工作三年，每天加班到深夜，房租占去工资的一半。你在坚持与放弃之间摇摆，但内心深处，你依然相信努力的意义。
+                    </div>
+                    <div class="char-traits">
+                        <span class="trait-tag">坚韧</span>
+                        <span class="trait-tag">务实</span>
+                        <span class="trait-tag">焦虑</span>
+                        <span class="trait-tag">责任感强</span>
+                    </div>
+                    <div class="char-ability">
+                        <strong>特殊能力：</strong>坚韧意志 - 在压力下保持冷静，获得额外20%的抗压加成
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="selectCharacter('wanderer')" id="char-wanderer">
+                    <div class="char-icon">🌙</div>
+                    <div class="char-name">迷茫旅人</div>
+                    <div class="char-title">在十字路口徘徊的思考者</div>
+                    <div class="char-desc">
+                        你经历了几次失败的创业，感情也刚刚结束。你在重新思考人生的意义和方向。虽然迷茫，但你拥有比常人更深刻的洞察力。
+                    </div>
+                    <div class="char-traits">
+                        <span class="trait-tag">敏感</span>
+                        <span class="trait-tag">深思熟虑</span>
+                        <span class="trait-tag">悲观</span>
+                        <span class="trait-tag">富有洞察力</span>
+                    </div>
+                    <div class="char-ability">
+                        <strong>特殊能力：</strong>洞察之眼 - 看透事物的本质，获得额外20%的思考深度加成
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="selectCharacter('parent')" id="char-parent">
+                    <div class="char-icon">👨‍👩‍👧</div>
+                    <div class="char-name">职场父母</div>
+                    <div class="char-title">左手PPT右手奶瓶的超人</div>
+                    <div class="char-desc">
+                        你有两个孩子，房贷还有二十年。每天在公司和家庭之间奔波，地铁上那十分钟闭眼就是最大的奢侈。虽然累，但看到孩子的笑容，一切都值了。
+                    </div>
+                    <div class="char-traits">
+                        <span class="trait-tag">责任感强</span>
+                        <span class="trait-tag">时间管理大师</span>
+                        <span class="trait-tag">疲惫</span>
+                        <span class="trait-tag">温暖</span>
+                    </div>
+                    <div class="char-ability">
+                        <strong>特殊能力：</strong>平衡之力 - 在家庭和事业间游走，平衡主题感悟+3
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; display: none;" id="confirmCharBtn">
+                <button class="start-btn" onclick="confirmCharacter()">确认选择，开启旅程</button>
+            </div>
+        </div>
+
+        <div class="game-main" id="gameMain">
+            <div class="game-header">
+                <div class="player-info">
+                    <div class="player-avatar" id="playerAvatar">🌟</div>
+                    <div class="player-details">
+                        <h3 id="playerName">追梦少年</h3>
+                        <p id="playerTitle">心怀星辰的冒险家</p>
+                    </div>
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="chapterNum">1</div>
+                        <div class="stat-label">章节</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="comicCount">0</div>
+                        <div class="stat-label">漫画</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="wisdomScore">0</div>
+                        <div class="stat-label">感悟</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="scene-display" id="sceneDisplay">
+                <div class="chapter-title">
+                    <span class="chapter-badge" id="chapterBadge">第一章</span>
+                    <span id="chapterTitle">晨光初现</span>
+                </div>
+                <div class="scene-description" id="sceneDescription">
+                    新的一天开始了，你站在人生的十字路口...
+                </div>
+            </div>
+
+            <div class="comic-display-area" id="comicDisplay" style="display: none;">
+                <div class="comic-placeholder" id="comicEmoji">🎨</div>
+                <div class="comic-image-container" id="comicImageContainer" style="display: none;">
+                    <img class="comic-image" id="comicImage" src="" alt="小林漫画">
+                </div>
+                <div class="comic-caption" id="comicCaption"></div>
+                <div class="comic-theme" id="comicTheme"></div>
+                <div class="comic-reflection">
+                    <h4>💭 小林的启示</h4>
+                    <p id="comicWisdom"></p>
+                </div>
+            </div>
+
+            <div class="treasure-section" id="treasureSection" style="display: none;">
+                <div class="treasure-title">🎁 发现神秘宝箱！选择你的命运之箱</div>
+                <div class="chest-container" id="chestContainer"></div>
+                <p style="color: white; position: relative; z-index: 1; margin-top: 15px; font-size: 0.95em;">
+                    每个宝箱都藏着小林的一幅漫画，点击开启你的智慧之旅
+                </p>
+            </div>
+
+            <div id="flipCardArea" style="display: none; text-align: center; margin: 20px 0;">
+                <div class="flip-card" id="flipCard">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">📖</div>
+                        <div class="flip-card-back">
+                            <div id="flipCardContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="choice-section" id="choiceSection" style="display: none;">
+                <div class="choice-title" id="choiceTitle">面对这个情况，你会如何选择？</div>
+                <div class="choices-container" id="choicesContainer"></div>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0; display: none;" id="continueBtn">
+                <button class="start-btn" onclick="nextChapter()">继续旅程 ➡️</button>
+            </div>
+        </div>
+
+        <div class="ending-screen" id="endingScreen">
+            <div class="ending-title" id="endingTitle">🎉 旅程完成</div>
+            <div class="ending-content" id="endingContent"></div>
+            <div class="ending-stats" id="endingStats"></div>
+            <div class="evaluation" id="evaluation"></div>
+            <div style="margin-top: 30px;">
+                <button class="restart-btn" onclick="restartGame()">🔄 重新开始游戏</button>
+                <button class="restart-btn" style="margin-left: 15px; background: linear-gradient(45deg, var(--secondary), var(--cool));" onclick="showCollection()">📚 查看收集册</button>
+            </div>
+        </div>
+
+        <div class="collection-book" id="collectionBook">
+            <h2 class="section-title" style="color: var(--dark);">📚 小林漫画收集册</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                你收集的漫画金句，每一句都是人生的智慧
+            </p>
+            <div class="collection-grid" id="collectionGrid"></div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="restart-btn" onclick="returnToGame()" style="background: linear-gradient(45deg, var(--secondary), var(--cool));">↩️ 返回游戏</button>
+                <button class="restart-btn" onclick="restartGame()" style="margin-left: 10px;">🔄 重新开始</button>
+                <button class="restart-btn" onclick="clearCollection()" style="margin-left: 10px; background: #999;">🗑️ 清空收集册</button>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="floating-btn" id="collectionBtn" onclick="showCollection()">📚</button>
+
+    <script>
+        // ==================== 游戏数据 ====================
+        const comicsData = [
+            { id: 1, text: "别去那种天天要冲的公司，马桶才是要天天冲", theme: "职场", wisdom: "选择比努力更重要，适合自己的环境才能长久发展。", image: "https://pan325.github.io/hp10/comic-1.jpg", score: 12 },
+            { id: 2, text: "比我可爱有趣的人很多，但比我会找茬的你能找得到吗？", theme: "自我认知", wisdom: "每个人都有独特的价值，不必妄自菲薄。", image: "https://pan325.github.io/hp10/comic-2.jpg", score: 10 },
+            { id: 3, text: "本想蒙着被子痛哭一场，结果太暖和睡着了", theme: "情绪管理", wisdom: "生活中的小确幸往往在意想不到的时刻出现。", image: "https://pan325.github.io/hp10/comic-3.jpg", score: 14 },
+            { id: 4, text: "鱼是不需要鱼缸的，但每个鱼缸至少得有条鱼", theme: "关系", wisdom: "有时候我们以为自己在保护别人，其实可能是束缚。", image: "https://pan325.github.io/hp10/comic-4.jpg", score: 15 },
+            { id: 5, text: "说对了比说错了更容易得罪人", theme: "沟通", wisdom: "真相往往比谎言更难接受，学会委婉表达。", image: "https://pan325.github.io/hp10/comic-5.jpg", score: 11 },
+            { id: 6, text: "别抱怨年轻人不能吃苦了，好端端一个人为什么非要吃苦", theme: "价值观", wisdom: "吃苦不是目的，成长才是。不要盲目赞美苦难。", image: "https://pan325.github.io/hp10/comic-6.jpg", score: 18 },
+            { id: 7, text: "好几十岁的人了，吃火锅还总是在问：这个熟了没？", theme: "成长", wisdom: "保持好奇心是超能力，不分年龄。", image: "https://pan325.github.io/hp10/comic-7.jpg", score: 9 },
+            { id: 8, text: "每天早上的地铁里，都是死气沉沉的年轻人和朝气蓬勃的老年人", theme: "生活态度", wisdom: "生活的热情不在于年龄，而在于心态。", image: "https://pan325.github.io/hp10/comic-8.jpg", score: 16 },
+            { id: 9, text: "年轻人就要有国际视野，就像我从来没去过挪威，也知道那里湖面总是澄清，空气充满宁静", theme: "视野", wisdom: "知识和想象力可以带我们到达身体到不了的地方。", image: "https://pan325.github.io/hp10/comic-9.jpg", score: 13 },
+            { id: 10, text: "一定要趁年轻多出去走走，以后送外卖才认识路", theme: "经历", wisdom: "每一段经历都有价值，哪怕看似无用。", image: "https://pan325.github.io/hp10/comic-10.jpg", score: 10 },
+            { id: 11, text: "许多中年人根本意识不到，自己在别人眼中有多老，总认为自己风华正茂，特别是那些70、80、90后", theme: "自我认知", wisdom: "心态年轻比外表年轻更重要，但也要正视现实。", image: "https://pan325.github.io/hp10/comic-11.jpg", score: 11 },
+            { id: 12, text: "现今年轻人唯一的闲暇，就是追剧等广告的三十秒", theme: "生活节奏", wisdom: "在忙碌中也要学会给自己留白，哪怕只有三十秒。", image: "https://pan325.github.io/hp10/comic-12.jpg", score: 8 },
+            { id: 13, text: "人老了的征兆是：再也喝不了甜的，也吃不了零食，只能吃点新鲜水果。一天天不是浓茶，就是喝白开水", theme: "健康", wisdom: "健康的生活方式是对自己最好的投资。", image: "https://pan325.github.io/hp10/comic-13.jpg", score: 14 },
+            { id: 14, text: "年轻人为了养老拼命赚钱，老人为了恢复青春拼命花钱", theme: "人生阶段", wisdom: "每个阶段都有不同的追求，珍惜当下最重要。", image: "https://pan325.github.io/hp10/comic-14.jpg", score: 17 },
+            { id: 15, text: "别老说什么'送给年轻人的一句话'，现在的年轻人最需要的不是一句话，是一笔钱", theme: "现实", wisdom: "别跟我谈理想，我的理想是不上班还有钱。", image: "https://pan325.github.io/hp10/comic-15.jpg", score: 19 },
+            { id: 16, text: "当代年轻人的观念：我可以不结婚，但不能没人要；我可以讨厌工作，但不能没工作；我可以不想活了，但体检报告不能有一点问题", theme: "矛盾", wisdom: "现代人的矛盾在于理想与现实的拉扯，学会平衡很重要。", image: "https://pan325.github.io/hp10/comic-16.jpg", score: 20 },
+            { id: 17, text: "别老问我假期为啥总在家宅着，要是有钱，我早浪得没影了", theme: "经济压力", wisdom: "宅不一定是懒，可能只是口袋不允许。", image: "https://pan325.github.io/hp10/comic-17.jpg", score: 13 },
+            { id: 18, text: "在大城市奋斗这些年，取得的最大成就是能知道方圆五百米内所有不超过15块的外卖", theme: "奋斗", wisdom: "在大城市生存本身就是一种成就，不必妄自菲薄。", image: "https://pan325.github.io/hp10/comic-18.jpg", score: 10 },
+            { id: 19, text: "莫欺少年穷就是：你别看我穷，下单买东西可从不手软", theme: "消费观", wisdom: "消费观念反映了价值观，理性消费是成熟的标志。", image: "https://pan325.github.io/hp10/comic-19.jpg", score: 9 },
+            { id: 20, text: "以前签名是'莫欺少年穷'，经过多年努力奋斗，现在改成'莫欺中年穷'", theme: "成长", wisdom: "穷归穷，日子还是要继续往前走的。", image: "https://pan325.github.io/hp10/comic-20.jpg", score: 12 },
+            { id: 21, text: "我保持年经的最大秘诀，不是减肥瘦身，而是谎报年龄", theme: "心态", wisdom: "幽默感是最好的抗衰老武器。", image: "https://pan325.github.io/hp10/comic-21.jpg", score: 11 },
+            { id: 22, text: "年轻人需要指点，但不需要指指点点", theme: "尊重", wisdom: "给建议可以，别一副'我都是为你好'的语气。", image: "https://pan325.github.io/hp10/comic-22.jpg", score: 15 },
+            { id: 23, text: "花一样的年华，你却长成了多肉植物", theme: "自我接纳", wisdom: "不必追求标准化的美，每种形态都有其独特魅力。", image: "https://pan325.github.io/hp10/comic-23.jpg", score: 10 },
+            { id: 24, text: "当连一瓶汽水都喝不完，就知道自己老了", theme: "身体变化", wisdom: "疲惫是身体在提醒你，进化也需要休息。", image: "https://pan325.github.io/hp10/comic-24.jpg", score: 8 },
+            { id: 25, text: "买个卡通款的保温杯，是我最后的年轻", theme: "仪式感", wisdom: "保持一点童真，是对抗平庸生活的仪式。", image: "https://pan325.github.io/hp10/comic-25.jpg", score: 13 },
+            { id: 26, text: "年轻人为爱哭泣，成年人为穷落泪", theme: "情感", wisdom: "不同阶段的烦恼不同，但都需要被理解和接纳。", image: "https://pan325.github.io/hp10/comic-26.jpg", score: 16 },
+            { id: 27, text: "别年纪轻轻就觉得自己陷入人生低谷，你的未来还有很大的下滑空间", theme: "心态", wisdom: "黑色幽默背后是对生活的豁达，低谷不是终点。", image: "https://pan325.github.io/hp10/comic-27.jpg", score: 18 },
+            { id: 28, text: "青春像个冷笑话，事隔多年之后，才知道笑点在哪儿", theme: "回忆", wisdom: "时间会让一切变得清晰，包括那些曾经的困惑。", image: "https://pan325.github.io/hp10/comic-28.jpg", score: 14 },
+            { id: 29, text: "年轻人，你的职责是平整土地，而非焦虑时光。你做三四月的事，在八九月自有答案", theme: "耐心", wisdom: "专注于当下该做的事，结果自然会来。", image: "https://pan325.github.io/hp10/comic-29.jpg", score: 20 },
+            { id: 30, text: "年轻时不多经历一点，老了拿什么下酒", theme: "经历", wisdom: "丰富的经历是老年时最宝贵的财富。", image: "https://pan325.github.io/hp10/comic-30.jpg", score: 17 },
+            { id: 31, text: "如今的老年人没苦硬吃，如今的年轻人没福硬享", theme: "代沟", wisdom: "每一代人都有自己的生活方式，互相理解最重要。", image: "https://pan325.github.io/hp10/comic-31.jpg", score: 15 },
+            { id: 32, text: "我们都会选错做错，会莫名其妙掉眼泪，会半夜突然崩溃，但这并不影响我们去看日出晚霞，并再次爱上这个世界", theme: "韧性", wisdom: "允许自己脆弱，但也要有重新站起来的勇气。", image: "https://pan325.github.io/hp10/comic-32.jpg", score: 20 },
+            { id: 33, text: "只要年轻时痴迷的偶像看起来还没老，就感觉自己还年轻", theme: "偶像", wisdom: "偶像是我们青春的坐标，他们的状态映射着我们的心态。", image: "https://pan325.github.io/hp10/comic-33.jpg", score: 9 },
+            { id: 34, text: "作为过来人，我给年轻人的建议是：别过来", theme: "经验", wisdom: "过来人的经验可以参考，但路要自己走。", image: "https://pan325.github.io/hp10/comic-34.jpg", score: 16 },
+            { id: 35, text: "管他几岁，青春万岁", theme: "态度", wisdom: "年龄只是数字，保持年轻的心态才是最重要的。", image: "https://pan325.github.io/hp10/comic-35.jpg", score: 25 }
+        ];
+
+        const characters = {
+            dreamer: {
+                name: "追梦少年",
+                title: "心怀星辰的冒险家",
+                icon: "🌟",
+                description: "你刚大学毕业，怀揣着改变世界的梦想来到大城市。",
+                bonus: "wisdom"
+            },
+            struggler: {
+                name: "奋斗青年",
+                title: "在夹缝中求生存的战士",
+                icon: "⚔️",
+                description: "你已经工作三年，每天加班到深夜，在坚持与放弃之间摇摆。",
+                bonus: "resilience"
+            },
+            wanderer: {
+                name: "迷茫旅人",
+                title: "在十字路口徘徊的思考者",
+                icon: "🌙",
+                description: "你经历了几次失败的创业，感情也刚刚结束，在重新思考人生。",
+                bonus: "insight"
+            },
+            parent: {
+                name: "职场父母",
+                title: "左手PPT右手奶瓶的超人",
+                icon: "👨‍👩‍👧",
+                description: "你有两个孩子，房贷还有二十年。每天在公司和家庭之间奔波，地铁上那十分钟闭眼就是最大的奢侈。",
+                bonus: "balance"
+            }
+        };
+
+        const chapters = {
+            dreamer: [
+                { id: 1, title: "晨光初现", description: "清晨的阳光洒在脸上，你站在人才市场门口，手里攥着精心准备的简历。旁边和你一样的年轻人排着长队，眼神里都闪着光。", scene: "🌅 人才市场门口", comics: [8, 9, 29, 30] },
+                { id: 2, title: "职场初体验", description: "入职第一周，你被安排了一堆杂活。前辈说年轻人要多锻炼，你笑着点头，心里却想：这和招聘时说的不一样啊...", scene: "🏢 公司茶水间", comics: [1, 5, 6, 15] },
+                { id: 3, title: "友情岁月", description: "周末和大学室友聚餐，大家吐槽着各自的工作和感情。笑声中你突然觉得，虽然穷，但有这些朋友真好。", scene: "🍻 热闹的大排档", comics: [2, 4, 16, 26] },
+                { id: 4, title: "城市探索", description: "你趁着周末去打卡了一家网红书店，在角落里翻到一本旅行随笔。书里写着：世界很大，先去看看。", scene: "📚 文艺的书店角落", comics: [3, 7, 10, 25] },
+                { id: 5, title: "回家看看", description: "放假回家，妈妈做了一桌子菜。爸爸问你工作怎么样，你说挺好的，然后低头扒饭。", scene: "🏠 温暖的家庭餐桌", comics: [11, 14, 31, 33] },
+                { id: 6, title: "第一笔工资", description: "终于发工资了！虽然不多，但你激动地给爸妈转了红包，又给自己买了一本惦记很久的书。", scene: "💳 ATM机前", comics: [17, 18, 19, 20] },
+                { id: 7, title: "梦想复盘", description: "半年过去了，你翻看年初写下的目标清单。有些实现了，有些还差得远。但你觉得，这一年没白过。", scene: "🌳 公园的银杏树下", comics: [21, 23, 27, 28] },
+                { id: 8, title: "继续出发", description: "新年的钟声敲响，你在天台看着烟花。去年的自己还那么青涩，今年已经成熟了不少。未来可期！", scene: "🌅 新年天台的烟花", comics: [22, 32, 34, 35] }
+            ],
+            struggler: [
+                { id: 1, title: "凌晨的地铁站", description: "加班到末班地铁，车厢里零星几个和你一样疲惫的人。你靠着车门闭眼养神，耳机里放着《平凡之路》。", scene: "🚇 凌晨末班地铁", comics: [8, 12, 27, 18] },
+                { id: 2, title: "改不完的方案", description: "已经是第七版方案了。客户说感觉不对，老板让你再改改。你看着凌晨四点的城市，泡了杯速溶咖啡。", scene: "💻 凌晨四点的办公桌", comics: [1, 5, 6, 15] },
+                { id: 3, title: "出租屋的夜晚", description: "隔壁情侣又吵架了，楼上小孩在跳绳。你戴上降噪耳机，发现降噪也降不掉心里的烦躁。", scene: "🏚️ 隔音很差的出租屋", comics: [2, 3, 16, 26] },
+                { id: 4, title: "裁员风声", description: "公司群里疯传要裁员。同事们在茶水间窃窃私语，你假装淡定地敲键盘，手心却在冒汗。", scene: "😰 气氛紧张的办公室", comics: [4, 7, 17, 13] },
+                { id: 5, title: "撑住", description: "妈妈打电话问你过得好不好，你说挺好的，还长胖了。挂了电话，你看着镜子里的自己，瘦了五斤。", scene: "📱 出租屋的镜子前", comics: [11, 14, 31, 24] },
+                { id: 6, title: "交完房租之后", description: "房租涨了五百，加上水电，半个月工资没了。你看着银行卡余额，默默取消了购物车里的羽绒服。", scene: "💳 手机银行的余额页", comics: [17, 19, 20, 10] },
+                { id: 7, title: "身体报警", description: "体检报告出来了，脂肪肝、颈椎病、心率不齐。你才28岁，医生说你这身体像40岁。", scene: "🏥 体检中心的走廊", comics: [21, 23, 27, 28] },
+                { id: 8, title: "转机", description: "朋友内推你进了一家新公司，虽然也累，但工资涨了不少。生活好像终于给了你一点甜头。", scene: "☀️ 新公司的落地窗前", comics: [22, 29, 34, 35] }
+            ],
+            wanderer: [
+                { id: 1, title: "辞职之后", description: "今天是辞职的第30天。你在出租屋里睡到自然醒，然后坐在床边发呆。自由了，但也空了。", scene: "🛏️ 中午还没叠被子的床", comics: [8, 3, 27, 12] },
+                { id: 2, title: "深夜胡思乱想", description: "凌晨两点睡不着，你开始怀疑当初为什么要辞职。老板确实讨厌，但现在连讨厌的对象都没有了。", scene: "🌙 深夜亮着手机屏的房间", comics: [1, 2, 5, 6] },
+                { id: 3, title: "咖啡馆偶遇", description: "在咖啡馆写日记，隔壁桌坐着一个画画的人。你偷瞄了一眼，画的是窗外的梧桐树。你突然有点羡慕：有热爱的人真好。", scene: "☕ 安静的街角咖啡馆", comics: [4, 16, 29, 25] },
+                { id: 4, title: "旅行的念头", description: "刷到一张大理的图片，蓝天白云苍山洱海。你查了查机票，不算贵。要不要去？你犹豫了。", scene: "📱 深夜刷手机的被窝", comics: [7, 10, 30, 9] },
+                { id: 5, title: "陌生人的善意", description: "在图书馆发呆，旁边的小朋友递给你一颗糖，说看你好像不开心。你接过糖，突然鼻子有点酸。", scene: "📚 社区图书馆的角落", comics: [11, 13, 31, 33] },
+                { id: 6, title: "钱包的真相", description: "创业失败后存款所剩无几。你开始记账，发现每个月最大的开销是外卖。原来孤独很费钱。", scene: "💳 皱巴巴的记账本", comics: [17, 18, 19, 20] },
+                { id: 7, title: "重新出发", description: "在朋友的建议下，你开始学着把感悟画成简单的小漫画。虽然画得不好，但画完的那刻，你笑了。", scene: "🎨 堆满草稿纸的小书桌", comics: [21, 23, 28, 32] },
+                { id: 8, title: "与自己和解", description: "你终于明白，不用急着找到答案。迷茫也是一种状态，人生不是考试，没有标准答案。管他几岁，往前走就对了。", scene: "🌅 清晨空旷的江边", comics: [22, 27, 34, 35] }
+            ],
+            parent: [
+                { id: 1, title: "早高峰", description: "六点半起床，做早餐、送孩子上学、挤地铁上班。你在地铁上靠着扶手闭眼五分钟，旁边一个年轻人正在刷短视频，声音外放。你想发火，但连发火的力气都没有。", scene: "🚇 早高峰的地铁车厢", comics: [8, 12, 27, 18] },
+                { id: 2, title: "请假", description: "孩子学校突然打电话：发烧了，快来接。你看着满屏的未读消息和下午的会议，深吸一口气，给老板发了请假消息。老板回：理解。但你知道，月底绩效会说话。", scene: "🏫 急匆匆赶到学校门口", comics: [1, 5, 6, 15] },
+                { id: 3, title: "周末", description: "好不容易周末，你答应带孩子去游乐园。排队一小时，玩了五分钟。下午回到家，你比上班还累。孩子说：爸爸/妈妈，今天最开心了。你突然觉得，值了。", scene: "🎠 人山人海的游乐园", comics: [3, 7, 25, 9] },
+                { id: 4, title: "深夜", description: "孩子终于睡了，你打开电脑继续加班。凌晨一点，你看着屏幕发呆。年轻时通宵打游戏的日子恍如隔世，现在通宵只为了赶方案。但你不后悔。", scene: "🌙 孩子睡着后的客厅", comics: [2, 4, 16, 26] },
+                { id: 5, title: "对比", description: "同事小年轻下班后去健身、约会、看展。你下班后去接孩子、做饭、辅导作业。偶尔你会羡慕，但看到孩子画的全家福贴在冰箱上，你觉得这才是你的代表作。", scene: "🏠 贴满涂鸦的冰箱前", comics: [11, 14, 31, 33] },
+                { id: 6, title: "账单", description: "月底了，奶粉、兴趣班、房贷、水电……你看着账单沉默。年轻时觉得钱是赚来花的，现在觉得钱是赚来给孩子花的。你把自己的购物车清空了。", scene: "💳 深夜的账单页面", comics: [17, 19, 20, 10] },
+                { id: 7, title: "惊喜", description: "生日这天，你以为全家都忘了。加班回到家，发现孩子用乐高拼了一个蛋糕，上面歪歪扭扭写着：生日快乐。你鼻子一酸，觉得再累都值得。", scene: "🎂 开门瞬间的惊喜", comics: [21, 23, 28, 32] },
+                { id: 8, title: "值得", description: "孩子问：你为什么要上班？你答：因为要赚钱给你买好吃的。孩子想了想说：那我少吃一点。你抱着孩子笑了，心里想：此生最正确的决定，就是有了这个家。", scene: "🌅 周末清晨的家庭时光", comics: [22, 29, 34, 35] }
+            ]
+        };
+
+        // ==================== 游戏状态 ====================
+        let savedCollection = JSON.parse(localStorage.getItem('comicCollection') || '[]');
+        let gameState = {
+            currentCharacter: null,
+            currentChapter: 0,
+            collectedComics: [],
+            wisdomScore: 0,
+            choices: [],
+            soundEnabled: true,
+            chapterProgress: 0
+        };
+        let currentChoices = [];
+
+        // ==================== 背景音乐 ====================
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.3;
+
+        // ==================== 音效系统 ====================
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playSound(type) {
+            if (!gameState.soundEnabled || !audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            switch (type) {
+                case 'click':
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    oscillator.start(audioCtx.currentTime);
+                    oscillator.stop(audioCtx.currentTime + 0.1);
+                    break;
+                case 'chest':
+                    oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    oscillator.start(audioCtx.currentTime);
+                    oscillator.stop(audioCtx.currentTime + 0.5);
+                    break;
+                case 'flip':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    oscillator.start(audioCtx.currentTime);
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                    break;
+                case 'success':
+                    const notes = [523, 659, 784, 1047];
+                    notes.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.15);
+                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.15);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.15 + 0.3);
+                        osc.start(audioCtx.currentTime + i * 0.15);
+                        osc.stop(audioCtx.currentTime + i * 0.15 + 0.3);
+                    });
+                    break;
+                case 'ending':
+                    const endNotes = [392, 523, 659, 784, 1047, 784, 1047];
+                    endNotes.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.2);
+                        gain.gain.setValueAtTime(0.25, audioCtx.currentTime + i * 0.2);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.2 + 0.4);
+                        osc.start(audioCtx.currentTime + i * 0.2);
+                        osc.stop(audioCtx.currentTime + i * 0.2 + 0.4);
+                    });
+                    break;
+            }
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            document.getElementById('soundBtn').textContent = gameState.soundEnabled ? '🔊' : '🔇';
+            if (gameState.soundEnabled) {
+                initAudio();
+                bgMusic.play().catch(e => console.log('自动播放被阻止'));
+            } else {
+                bgMusic.pause();
+            }
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#FF8C42', '#6C5CE7'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 20 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // ==================== 游戏流程控制 ====================
+        function startGame() {
+            initAudio();
+            playSound('click');
+            if (gameState.soundEnabled) bgMusic.play().catch(e => {});
+            document.getElementById('titleScreen').style.display = 'none';
+            document.getElementById('storyIntro').style.display = 'block';
+        }
+
+        function showCharacterSelect() {
+            playSound('click');
+            document.getElementById('storyIntro').style.display = 'none';
+            document.getElementById('characterSelect').style.display = 'block';
+        }
+
+        function selectCharacter(charId) {
+            playSound('click');
+            document.querySelectorAll('.character-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('char-' + charId).classList.add('selected');
+            gameState.currentCharacter = charId;
+            document.getElementById('confirmCharBtn').style.display = 'block';
+        }
+
+        function confirmCharacter() {
+            playSound('success');
+            // 清零本局显示
+            document.getElementById('wisdomScore').textContent = '0';
+            document.getElementById('comicCount').textContent = '0';
+            document.getElementById('chapterNum').textContent = '1';
+            const char = characters[gameState.currentCharacter];
+            document.getElementById('playerAvatar').textContent = char.icon;
+            document.getElementById('playerName').textContent = char.name;
+            document.getElementById('playerTitle').textContent = char.title;
+            document.getElementById('characterSelect').style.display = 'none';
+            document.getElementById('gameMain').style.display = 'block';
+            document.getElementById('collectionBtn').style.display = 'block';
+            loadChapter(0);
+        }
+
+        function loadChapter(chapterIndex) {
+            gameState.currentChapter = chapterIndex;
+            const chapterList = chapters[gameState.currentCharacter];
+            const chapter = chapterList[chapterIndex];
+            document.getElementById('chapterBadge').textContent = '第' + chapter.id + '章';
+            document.getElementById('chapterTitle').textContent = chapter.title;
+            document.getElementById('sceneDescription').innerHTML =
+                '<strong style="color: var(--primary);">' + chapter.scene + '</strong><br><br>' + chapter.description;
+            const progress = ((chapterIndex) / chapterList.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('chapterNum').textContent = chapter.id;
+            document.getElementById('comicDisplay').style.display = 'none';
+            document.getElementById('treasureSection').style.display = 'none';
+            document.getElementById('choiceSection').style.display = 'none';
+            document.getElementById('continueBtn').style.display = 'none';
+            document.getElementById('flipCardArea').style.display = 'none';
+            setTimeout(() => showTreasureChests(chapter), 1500);
+        }
+
+        function showTreasureChests(chapter) {
+            const container = document.getElementById('chestContainer');
+            container.innerHTML = '';
+            chapter.comics.forEach((comicId, index) => {
+                const chest = document.createElement('div');
+                chest.className = 'chest';
+                chest.textContent = '📦';
+                chest.dataset.comicId = comicId;
+                chest.dataset.index = index;
+                chest.onclick = () => openChest(chest, comicId);
+                container.appendChild(chest);
+            });
+            document.getElementById('treasureSection').style.display = 'block';
+            const chests = container.querySelectorAll('.chest');
+            chests.forEach((chest, i) => {
+                chest.style.opacity = '0';
+                chest.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    chest.style.transition = 'all 0.5s ease';
+                    chest.style.opacity = '1';
+                    chest.style.transform = 'translateY(0)';
+                }, i * 200);
+            });
+        }
+
+        function openChest(chestElement, comicId) {
+            if (chestElement.classList.contains('opened')) return;
+            playSound('chest');
+            chestElement.classList.add('shaking');
+            setTimeout(() => {
+                chestElement.classList.remove('shaking');
+                chestElement.classList.add('opened');
+                chestElement.textContent = '✨';
+                createStars(chestElement);
+                setTimeout(() => showComic(comicId), 500);
+            }, 500);
+        }
+
+        function createStars(element) {
+            const rect = element.getBoundingClientRect();
+            for (let i = 0; i < 8; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100 + 'px';
+                star.style.top = rect.top + rect.height / 2 + (Math.random() - 0.5) * 100 + 'px';
+                star.style.animationDelay = Math.random() * 0.3 + 's';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 2000);
+            }
+        }
+
+        function showComic(comicId) {
+            const comic = comicsData.find(c => c.id === comicId);
+            if (!comic) return;
+            if (!gameState.collectedComics.includes(comicId)) {
+                gameState.collectedComics.push(comicId);
+                document.getElementById('comicCount').textContent = gameState.collectedComics.length;
+                if (!savedCollection.includes(comicId)) {
+                    savedCollection.push(comicId);
+                    localStorage.setItem('comicCollection', JSON.stringify(savedCollection));
+                }
+            }
+            document.getElementById('treasureSection').style.display = 'none';
+            showFlipCard(comic);
+        }
+
+        function showFlipCard(comic) {
+            playSound('flip');
+            const flipCardArea = document.getElementById('flipCardArea');
+            const flipCard = document.getElementById('flipCard');
+            const content = document.getElementById('flipCardContent');
+            content.innerHTML = '<img src="' + comic.image + '" alt="漫画预览" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" onerror="this.style.display=\'none\'">';
+            flipCardArea.style.display = 'block';
+            flipCard.classList.remove('flipped');
+            setTimeout(() => {
+                flipCard.classList.add('flipped');
+                playSound('success');
+                setTimeout(() => {
+                    flipCardArea.style.display = 'none';
+                    showComicDetail(comic);
+                }, 2500);
+            }, 800);
+        }
+
+        function showComicDetail(comic) {
+            const display = document.getElementById('comicDisplay');
+            const imageContainer = document.getElementById('comicImageContainer');
+            const comicImage = document.getElementById('comicImage');
+            comicImage.src = comic.image;
+            comicImage.onerror = () => imageContainer.style.display = 'none';
+            comicImage.onload = () => imageContainer.style.display = 'block';
+            document.getElementById('comicCaption').textContent = comic.text;
+            document.getElementById('comicTheme').textContent = '主题：' + comic.theme;
+            document.getElementById('comicWisdom').textContent = comic.wisdom;
+            const emojis = { '职场':'💼','自我认知':'🤔','情绪管理':'😌','关系':'💕','沟通':'🗣️','价值观':'⚖️','成长':'🌱','生活态度':'☀️','视野':'🌍','经历':'🎒','生活节奏':'⏰','健康':'💪','人生阶段':'📅','现实':'💭','矛盾':'⚡','经济压力':'💰','奋斗':'🏃','消费观':'🛍️','心态':'😊','尊重':'🙏','自我接纳':'💖','身体变化':'⏳','仪式感':'🎀','情感':'💘','回忆':'📸','耐心':'🌾','代沟':'👥','韧性':'🦋','偶像':'🌟','经验':'📚','态度':'🎉' };
+            document.getElementById('comicEmoji').textContent = emojis[comic.theme] || '🎨';
+            display.style.display = 'block';
+            let bonus = comic.score || 10;
+            if (gameState.currentCharacter === 'dreamer' && comic.theme === '视野') bonus += 3;
+            if (gameState.currentCharacter === 'struggler' && comic.theme === '奋斗') bonus += 3;
+            if (gameState.currentCharacter === 'wanderer' && comic.theme === '自我认知') bonus += 3;
+            if (gameState.currentCharacter === 'parent' && comic.theme === '人生阶段') bonus += 3;
+            gameState.wisdomScore += bonus;
+            document.getElementById('wisdomScore').textContent = gameState.wisdomScore;
+            setTimeout(() => showChoices(comic), 2000);
+        }
+
+        function showChoices(comic) {
+            const choiceSection = document.getElementById('choiceSection');
+            const container = document.getElementById('choicesContainer');
+            const choices = generateChoices(comic);
+            currentChoices = choices;
+            container.innerHTML = '';
+            choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.innerHTML = '<span class="choice-label">' + String.fromCharCode(65 + index) + '</span>' + choice.text;
+                btn.onclick = () => makeChoice(index);
+                container.appendChild(btn);
+            });
+            choiceSection.style.display = 'block';
+        }
+
+        function generateChoices(comic) {
+            const choiceSets = {
+                '职场': [
+                    { text: "默默忍受，相信努力终会被看见", result: "隐忍", wisdom: "你的坚持让人敬佩，但有时候适当的表达同样重要。" },
+                    { text: "找老板谈谈，表达自己的想法", result: "沟通", wisdom: "勇敢表达是成长的第一步，你正在学会为自己发声。" },
+                    { text: "开始寻找更适合自己的平台", result: "转变", wisdom: "选择比努力更重要，你懂得为自己的人生负责。" }
+                ],
+                '自我认知': [
+                    { text: "接受自己的独特，不再比较", result: "接纳", wisdom: "每个人都是独一无二的存在，你的价值不需要通过比较来证明。" },
+                    { text: "努力改变自己，变得更好", result: "改变", wisdom: "成长是永恒的主题，但改变是为了成为更好的自己。" },
+                    { text: "专注于发挥自己的优势", result: "专注", wisdom: "扬长避短是智慧，你在学会用正确的方式看待自己。" }
+                ],
+                '情绪管理': [
+                    { text: "允许自己笨拙，傻一次也好", result: "释放", wisdom: "情绪需要出口，允许自己脆弱是内心强大的表现。" },
+                    { text: "转移注意力，重新学会没学会的事", result: "转移", wisdom: "你懂得自我调节，这是成熟的表现。" },
+                    { text: "找朋友问问，寻求关心", result: "倾诉", wisdom: "求助不是软弱，懂得借助外力是智慧的选择。" }
+                ],
+                '关系': [
+                    { text: "给对方更多空间和自由", result: "放手", wisdom: "爱不是占有，你正在学会尊重他人的边界。" },
+                    { text: "加强沟通，表达自己的需求", result: "沟通", wisdom: "健康的关系建立在坦诚沟通的基础上。" },
+                    { text: "反思自己在这段关系中的角色", result: "反思", wisdom: "自我反思是成长的催化剂，你正在变得更加成熟。" }
+                ],
+                '沟通': [
+                    { text: "坚持说真话，即使得罪人", result: "坦诚", wisdom: "真诚是美德，但方式同样重要，你在学习平衡的艺术。" },
+                    { text: "学会委婉表达，照顾他人感受", result: "委婉", wisdom: "情商与智商同样重要，你正在成为一个温暖的人。" },
+                    { text: "选择沉默，避免不必要的冲突", result: "沉默", wisdom: "沉默是金，但过度的沉默可能错失沟通的机会。" }
+                ],
+                '价值观': [
+                    { text: "年轻时吃点苦可以，但没必要硬吃", result: "传统", wisdom: "不歌颂苦难，只解决困难，这才是对自己负责。" },
+                    { text: "与其歌颂苦难，不如找个不苦的活法", result: "质疑", wisdom: "批判性思维是进步的源泉，你正在打破思维的桎梏。" },
+                    { text: "平衡努力与享受，找到适合自己的节奏", result: "平衡", wisdom: "中庸之道是东方智慧，你正在找到属于自己的平衡点。" }
+                ],
+                '生活态度': [
+                    { text: "看看公园里晨练的大爷，比我还有活力", result: "学习", wisdom: "生活热情与年龄无关，心态才是开关。" },
+                    { text: "接受自己的状态，不必强求", result: "接受", wisdom: "接纳当下的自己是内心平静的开始。" },
+                    { text: "寻找让自己重新充满活力的事物", result: "寻找", wisdom: "主动出击，你在为自己的人生负责。" }
+                ],
+                '视野': [
+                    { text: "多读书，用知识拓展视野", result: "读书", wisdom: "书籍是人类进步的阶梯，你在用智慧武装自己。" },
+                    { text: "攒钱旅行，亲眼看看这个世界", result: "旅行", wisdom: "读万卷书不如行万里路，你在用脚步丈量世界。" },
+                    { text: "与不同背景的人交流，开阔眼界", result: "交流", wisdom: "每个人都是一本书，你在通过他人了解世界。" }
+                ],
+                '经历': [
+                    { text: "趁年轻多尝试，不怕失败", result: "尝试", wisdom: "年轻就是资本，你在用经历书写人生。" },
+                    { text: "专注一个方向，深耕细作", result: "专注", wisdom: "深度与广度同样重要，你在寻找自己的节奏。" },
+                    { text: "记录每一段经历，留作回忆", result: "记录", wisdom: "记录让经历更有意义，你在创造属于自己的历史。" }
+                ],
+                '生活节奏': [
+                    { text: "学会在碎片时间中放松自己", result: "适应", wisdom: "适应环境是生存的智慧，你在学会与时代共舞。" },
+                    { text: "努力创造属于自己的大块时间", result: "争取", wisdom: "为自己争取空间是自我关爱的表现。" },
+                    { text: "接受忙碌是当代人的常态", result: "接受", wisdom: "接纳现实是改变的第一步，你在学会与自己和解。" }
+                ],
+                '健康': [
+                    { text: "朋克养生：熬夜敷面膜，啤酒泡枸杞", result: "养生", wisdom: "养生可以很潮，健康不必苦行僧。" },
+                    { text: "坚持运动，保持身体活力", result: "运动", wisdom: "运动是最好的投资，你在为未来储蓄健康。" },
+                    { text: "定期体检，关注身体信号", result: "体检", wisdom: "预防胜于治疗，你在学会对自己负责。" }
+                ],
+                '人生阶段': [
+                    { text: "现在多攒点经历，以后吹牛也有素材", result: "积累", wisdom: "经历是最好的故事，你在收集未来的下酒菜。" },
+                    { text: "攒钱和快乐不冲突，我都要", result: "享受", wisdom: "活在当下和规划未来可以兼得。" },
+                    { text: "找到工作与生活的平衡点", result: "平衡", wisdom: "平衡是人生的艺术，你正在掌握这门技艺。" }
+                ],
+                '现实': [
+                    { text: "别光画饼，打钱最实际", result: "帮助", wisdom: "听懂年轻人的潜台词，才是真正的理解。" },
+                    { text: "真要帮我，就把钱给到位", result: "榜样", wisdom: "以身作则胜过千言万语。" },
+                    { text: "鸡汤留着，先把工资结一下", result: "反思", wisdom: "自我反思是成长的标志。" }
+                ],
+                '矛盾': [
+                    { text: "一边想躺平，一边想暴富，这不冲突", result: "接纳", wisdom: "矛盾是人生的常态，接纳它你就获得了自由。" },
+                    { text: "努力解决矛盾，追求内心的统一", result: "解决", wisdom: "过程同样重要。" },
+                    { text: "与矛盾共存，在拉扯中寻找平衡", result: "共存", wisdom: "在矛盾中寻找平衡是高级的智慧。" }
+                ],
+                '经济压力': [
+                    { text: "宅不是懒，是穷得明明白白", result: "理解", wisdom: "理解万岁，你在学会尊重他人的生活方式。" },
+                    { text: "约朋友来家里打游戏，也挺快乐", result: "鼓励", wisdom: "快乐不需要昂贵的代价。" },
+                    { text: "谁不想出去玩呢，先攒钱再说", result: "反思", wisdom: "批判性思考是觉醒的开始。" }
+                ],
+                '奋斗': [
+                    { text: "能活到中年已经很厉害了", result: "肯定", wisdom: "自我肯定是力量的源泉。" },
+                    { text: "换个签名：莫欺老年穷，先熬到退休", result: "前进", wisdom: "志存高远是好事，但别忘了欣赏沿途的风景。" },
+                    { text: "穷得开心也算一种本事", result: "定义", wisdom: "定义权在自己手中。" }
+                ],
+                '消费观': [
+                    { text: "可以买贵的，不能买贵了", result: "理性", wisdom: "省钱不靠抠门，靠聪明。" },
+                    { text: "适度犒劳自己，生活不只是存钱", result: "犒劳", wisdom: "爱自己同样重要。" },
+                    { text: "投资自己，让钱花得更有价值", result: "投资", wisdom: "投资自己是最好的投资。" }
+                ],
+                '心态': [
+                    { text: "别急，以后可能更惨，笑着活下去吧", result: "幽默", wisdom: "幽默是人生的解药。" },
+                    { text: "低谷就低谷，先睡一觉再说", result: "保养", wisdom: "真正的保养从减少内耗开始。" },
+                    { text: "低谷要是能拿来吹牛，也不算白过", result: "接受", wisdom: "保鲜心态，比保鲜皮肤更重要。" }
+                ],
+                '尊重': [
+                    { text: "先闭嘴听我说完，你的建议可能我就不需要了", result: "倾听", wisdom: "倾听是最好的尊重。" },
+                    { text: "你说你的想法就行，别拐弯抹角教我做人", result: "引导", wisdom: "授人以渔胜过授人以鱼。" },
+                    { text: "看不惯就憋着，我自己的人生自己过", result: "尊重", wisdom: "尊重差异是成熟的标志。" }
+                ],
+                '自我接纳': [
+                    { text: "接纳自己的不完美，爱自己", result: "自爱", wisdom: "自爱是所有爱的起点。" },
+                    { text: "努力改变，成为更好的自己", result: "改变", wisdom: "成长是永恒的主题。" },
+                    { text: "发现自己的独特之美", result: "发现", wisdom: "美是多元的。" }
+                ],
+                '身体变化': [
+                    { text: "珍惜年轻时的活力，好好利用", result: "珍惜", wisdom: "珍惜当下是智慧。" },
+                    { text: "开始调整生活方式，适应变化", result: "调整", wisdom: "适应变化是生存的智慧。" },
+                    { text: "不服老，保持年轻的心态", result: "不服", wisdom: "心态决定状态。" }
+                ],
+                '仪式感': [
+                    { text: "六一给自己买棒棒糖，怎么了", result: "仪式", wisdom: "成年人也可以过节，仪式感自己给。" },
+                    { text: "成熟是学会给自己找乐子", result: "简单", wisdom: "简单但不无聊。" },
+                    { text: "在成熟与童真之间找到平衡", result: "平衡", wisdom: "平衡是人生的艺术。" }
+                ],
+                '情感': [
+                    { text: "珍惜为爱哭泣的能力，这是年轻的特权", result: "珍惜", wisdom: "感性是年轻的礼物。" },
+                    { text: "成年人的崩溃，从花呗账单开始", result: "理解", wisdom: "理解是爱的基础。" },
+                    { text: "哭完记得看看余额，明天还得上班", result: "平衡", wisdom: "平衡是成熟的标志。" }
+                ],
+                '回忆': [
+                    { text: "珍惜当下的每一刻，创造美好回忆", result: "珍惜", wisdom: "当下是未来回忆的素材。" },
+                    { text: "与老友重聚，重温青春时光", result: "重聚", wisdom: "友情是岁月的佳酿。" },
+                    { text: "用日记记录生活，留住美好瞬间", result: "记录", wisdom: "记录让回忆永恒。" }
+                ],
+                '耐心': [
+                    { text: "专注于当下，不焦虑未来", result: "专注", wisdom: "专注是力量的源泉。" },
+                    { text: "制定计划，按部就班地前进", result: "计划", wisdom: "计划让目标清晰。" },
+                    { text: "相信时间的力量，静待花开", result: "静待", wisdom: "耐心是美德。" }
+                ],
+                '代沟': [
+                    { text: "他们吃过的苦是真的，我们受的累也是真的", result: "理解", wisdom: "理解是沟通的桥梁。" },
+                    { text: "人到中年，好像看谁都不顺眼", result: "学习", wisdom: "活到老学到老。" },
+                    { text: "别争了，各过各的，互相别太操心", result: "互补", wisdom: "差异是财富。" }
+                ],
+                '韧性': [
+                    { text: "允许自己崩溃，但要有重新站起来的勇气", result: "韧性", wisdom: "韧性是生命的力量。" },
+                    { text: "寻找让自己重新爱上世界的事物", result: "寻找", wisdom: "爱是治愈一切的良药。" },
+                    { text: "帮助他人，在给予中获得力量", result: "给予", wisdom: "给予比接受更幸福。" }
+                ],
+                '偶像': [
+                    { text: "把偶像当作激励自己的动力", result: "激励", wisdom: "榜样是前行的灯塔。" },
+                    { text: "理性追星，过好自己的生活", result: "理性", wisdom: "理性是成熟的标志。" },
+                    { text: "成为自己的偶像，活成想要的样子", result: "自我", wisdom: "最好的偶像是自己。" }
+                ],
+                '经验': [
+                    { text: "听听前辈的，然后自己拿主意", result: "尊重", wisdom: "借鉴而不盲从，独立思考才是终极铠甲。" },
+                    { text: "走出自己的路，创造新的经验", result: "创新", wisdom: "创新是进步的动力。" },
+                    { text: "过来与不过来，可能都差不多", result: "平衡", wisdom: "平衡是人生的艺术。" }
+                ],
+                '态度': [
+                    { text: "年龄是别人定的，心态是自己的", result: "年轻", wisdom: "心态决定状态。" },
+                    { text: "管他几岁，快乐万岁", result: "享受", wisdom: "每个年龄段都可以活得闪闪发光。" },
+                    { text: "用行动证明，青春无关年龄", result: "证明", wisdom: "行动是最好的证明。" }
+                ]
+            };
+            return choiceSets[comic.theme] || choiceSets['态度'];
+        }
+
+        function makeChoice(choiceIndex) {
+            playSound('click');
+            const choice = currentChoices[choiceIndex];
+            gameState.choices.push({
+                chapter: gameState.currentChapter,
+                choice: choice.result,
+                text: choice.text
+            });
+            document.getElementById('choiceSection').style.display = 'none';
+            const display = document.getElementById('sceneDisplay');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'choice-feedback';
+            resultDiv.style.cssText = 'margin-top:15px; padding:12px; background:rgba(78,205,196,0.1); border-radius:8px; border-left:3px solid var(--secondary); animation: fadeIn 0.5s ease-out;';
+            resultDiv.innerHTML = '<span style="color: var(--secondary);">💭 你的感悟：</span><em style="color: #444; line-height: 1.7;">' + choice.wisdom + '</em>';
+            display.appendChild(resultDiv);
+            gameState.wisdomScore += 15;
+            document.getElementById('wisdomScore').textContent = gameState.wisdomScore;
+            document.getElementById('continueBtn').style.display = 'block';
+            setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 300);
+        }
+
+        function nextChapter() {
+            playSound('click');
+            const display = document.getElementById('sceneDisplay');
+            const cards = display.querySelectorAll('.comic-card, .choice-feedback');
+            cards.forEach(card => card.remove());
+            document.getElementById('continueBtn').style.display = 'none';
+            document.getElementById('comicDisplay').style.display = 'none';
+            if (gameState.currentChapter >= chapters[gameState.currentCharacter].length - 1) {
+                showEnding();
+            } else {
+                const transitions = ["继续前行...", "新的挑战等待着你...", "时光流转...", "收拾心情，再次出发...", "感悟沉淀，脚步不停...", "带着智慧，推开下一扇门...", "故事还在继续..."];
+                const sceneDesc = document.getElementById('sceneDescription');
+                sceneDesc.innerHTML = '<div style="text-align:center;padding:20px;"><div style="font-size:2em;">🚶</div><p style="color:var(--cool);font-style:italic;">' + transitions[gameState.currentChapter] + '</p></div>';
+                setTimeout(() => loadChapter(gameState.currentChapter + 1), 1200);
+            }
+        }
+
+        function showEnding() {
+            playSound('ending');
+            document.getElementById('gameMain').style.display = 'none';
+            document.getElementById('collectionBtn').style.display = 'none';
+            document.getElementById('endingScreen').style.display = 'block';
+            const char = characters[gameState.currentCharacter];
+            let endingText = '<p style="text-align:center;font-size:1.2em;color:var(--primary);">🎉 恭喜你，' + char.name + '！你完成了青春漫游之旅！</p>';
+            endingText += '<p>经历了8个章节，收集了' + gameState.collectedComics.length + '张漫画金句，做出了' + gameState.choices.length + '次人生选择。</p>';
+            const choiceTypes = gameState.choices.map(c => c.choice);
+            const uniqueChoices = [...new Set(choiceTypes)];
+            if (gameState.currentCharacter === 'dreamer') endingText += '<p>作为追梦少年，你始终保持着对未来的憧憬。记住：<strong>"管他几岁，青春万岁！"</strong></p>';
+            else if (gameState.currentCharacter === 'struggler') endingText += '<p>作为奋斗青年，你的每一次坚持都值得被看见。记住：<strong>"年轻人你的职责是平整土地，而非焦虑时光。"</strong></p>';
+            else if (gameState.currentCharacter === 'wanderer') endingText += '<p>作为迷茫旅人，你在困惑中找到了方向。记住：<strong>"我们都会选错做错，但这并不影响我们再次爱上这个世界。"</strong></p>';
+            else if (gameState.currentCharacter === 'parent') endingText += '<p>作为职场父母，你在家庭与事业间走出了自己的路。记住：<strong>"左手PPT右手奶瓶，你已经是超人。"</strong></p>';
+            endingText += '<p style="margin-top:20px;">你的人生选择展现了' + uniqueChoices.join('、') + '的特质。</p>';
+            document.getElementById('endingContent').innerHTML = endingText;
+            document.getElementById('endingStats').innerHTML =
+                '<div class="ending-stat"><div class="ending-stat-value">' + gameState.collectedComics.length + '</div><div class="ending-stat-label">收集漫画</div></div>' +
+                '<div class="ending-stat"><div class="ending-stat-value">' + gameState.wisdomScore + '</div><div class="ending-stat-label">感悟分数</div></div>' +
+                '<div class="ending-stat"><div class="ending-stat-value">' + gameState.choices.length + '</div><div class="ending-stat-label">人生选择</div></div>' +
+                '<div class="ending-stat"><div class="ending-stat-value">' + uniqueChoices.length + '</div><div class="ending-stat-label">独特特质</div></div>';
+            let evaluation = '';
+            if (gameState.wisdomScore >= 260) {
+                evaluation = '<h4>🏆 评价：人生智者</h4><p>你对小林漫画的领悟力令人惊叹！</p>';
+            } else if (gameState.wisdomScore >= 220) {
+                evaluation = '<h4>🌟 评价：思考者</h4><p>你认真地思考了每一幅漫画背后的意义。</p>';
+            } else {
+                evaluation = '<h4>🌱 评价：成长中的探索者</h4><p>每一次旅程都是一次成长。</p>';
+            }
+            const choiceResults = gameState.choices.map(c => c.choice);
+            const acceptCount = choiceResults.filter(c => ['接纳','接受','自爱','释放','共存'].includes(c)).length;
+            const talkCount = choiceResults.filter(c => ['沟通','倾诉','倾听','理解','引导'].includes(c)).length;
+            const actCount = choiceResults.filter(c => ['改变','前进','创新','尝试','寻找'].includes(c)).length;
+            const reflectCount = choiceResults.filter(c => ['反思','思考','记录'].includes(c)).length;
+            evaluation += '<div style="margin-top:15px;padding:12px;background:rgba(78,205,196,0.08);border-radius:8px;">';
+            if (acceptCount >= 3) evaluation += '<p>🕊️ 你善于与自己和世界和解。</p>';
+            if (talkCount >= 3) evaluation += '<p>💬 你相信沟通的力量。</p>';
+            if (actCount >= 3) evaluation += '<p>🔥 你是个行动派。</p>';
+            if (reflectCount >= 3) evaluation += '<p>📝 你习惯深度思考。</p>';
+            if (acceptCount < 3 && talkCount < 3 && actCount < 3 && reflectCount < 3) evaluation += '<p>🌈 你的选择风格多变，像青春本身。</p>';
+            evaluation += '</div>';
+            evaluation += '<p style="margin-top:15px;"><strong>💌 寄语：</strong>';
+            if (gameState.currentCharacter === 'dreamer') evaluation += '愿你永远保持这份热情，梦想护盾永远闪耀！';
+            else if (gameState.currentCharacter === 'struggler') evaluation += '每一份坚持都不会被辜负。';
+            else if (gameState.currentCharacter === 'parent') evaluation += '左手PPT右手奶瓶的你，是孩子眼中最厉害的超人。';
+            else evaluation += '迷茫是找到答案的必经之路，走下去，光就在前方。';
+            evaluation += '</p>';
+            document.getElementById('evaluation').innerHTML = evaluation;
+        }
+
+        function showCollection() {
+            playSound('click');
+            document.getElementById('gameMain').style.display = 'none';
+            document.getElementById('endingScreen').style.display = 'none';
+            document.getElementById('collectionBook').style.display = 'block';
+            document.getElementById('collectionBtn').style.display = 'none';
+            const grid = document.getElementById('collectionGrid');
+            grid.innerHTML = '';
+            comicsData.forEach(comic => {
+                const isCollected = savedCollection.includes(comic.id);
+                const item = document.createElement('div');
+                item.className = 'collection-item ' + (isCollected ? 'collected' : 'not-collected');
+                let thumbnailHtml = isCollected ? '<img src="' + comic.image + '" class="collection-thumbnail" onerror="this.style.display=\'none\'">' : '';
+                item.innerHTML = thumbnailHtml + (isCollected ? '' : '<div style="color:#999;margin-top:5px;">🔒 未收集</div>');
+                if (isCollected) {
+                    item.onclick = () => alert('📖 漫画 #' + comic.id + '\n\n' + comic.text + '\n\n💡 启示：' + comic.wisdom);
+                    item.style.cursor = 'pointer';
+                }
+                grid.appendChild(item);
+            });
+        }
+
+        function returnToGame() {
+            playSound('click');
+            document.getElementById('collectionBook').style.display = 'none';
+            document.getElementById('collectionBtn').style.display = 'block';
+            if (gameState.currentCharacter) {
+                document.getElementById('gameMain').style.display = 'block';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function clearCollection() {
+            if (confirm('确定要清空所有收集的漫画吗？此操作不可恢复！')) {
+                savedCollection = [];
+                localStorage.removeItem('comicCollection');
+                showCollection();
+            }
+        }
+
+        function restartGame() {
+            playSound('click');
+            savedCollection = JSON.parse(localStorage.getItem('comicCollection') || '[]');
+            gameState = {
+                currentCharacter: null,
+                currentChapter: 0,
+                collectedComics: [],
+                wisdomScore: 0,
+                choices: [],
+                soundEnabled: gameState.soundEnabled,
+                chapterProgress: 0
+            };
+            document.getElementById('titleScreen').style.display = 'block';
+            document.getElementById('storyIntro').style.display = 'none';
+            document.getElementById('characterSelect').style.display = 'none';
+            document.getElementById('gameMain').style.display = 'none';
+            document.getElementById('endingScreen').style.display = 'none';
+            document.getElementById('collectionBook').style.display = 'none';
+            document.getElementById('collectionBtn').style.display = 'none';
+            document.querySelectorAll('.character-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('confirmCharBtn').style.display = 'none';
+            document.getElementById('comicCount').textContent = '0';
+            document.getElementById('wisdomScore').textContent = '0';
+            document.getElementById('chapterNum').textContent = '1';
+            document.getElementById('progressFill').style.width = '0%';
+            const display = document.getElementById('sceneDisplay');
+            const cards = display.querySelectorAll('.comic-card, .choice-feedback');
+            cards.forEach(card => card.remove());
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = function() {
+            createParticles();
+        };
+    </script>
+</body>
+</html>
